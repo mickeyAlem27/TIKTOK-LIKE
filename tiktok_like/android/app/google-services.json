@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "668543453386",
+    "project_id": "tiktok-like-24290",
+    "storage_bucket": "tiktok-like-24290.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:668543453386:android:66592ff0a36f8a0c6e8c33",
+        "android_client_info": {
+          "package_name": "com.example.tiktok_like"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZaYlKj_fPCipnlPemn0dKS1fe49PLXxw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
