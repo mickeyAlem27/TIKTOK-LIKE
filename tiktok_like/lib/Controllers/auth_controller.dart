@@ -29,18 +29,21 @@ class AuthController extends GetxController {
     if (user == null) {
       Get.offAll(() => LoginScreen());
     } else {
-      Get.offAll(() => const HomeScreen());
+      Get.offAll(() => HomeScreen());
+      Get.snackbar("Success", "You have successfully logged in!");
+
     }
+    
   }
 
   void pickImage() async {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
+      _pickedImage = Rx<File?>(File(pickedImage.path));
       Get.snackbar('Profile Picture',
           'You have successfully selected your profile picture!');
     }
-    _pickedImage = Rx<File?>(File(pickedImage!.path));
   }
 
   // upload to firebase storage
@@ -97,8 +100,24 @@ class AuthController extends GetxController {
   void loginUser(String email, String password) async {
     try {
       if (email.isNotEmpty && password.isNotEmpty) {
-        await firebaseAuth.signInWithEmailAndPassword(
+        UserCredential cred = await firebaseAuth.signInWithEmailAndPassword(
             email: email, password: password);
+        final String uid = cred.user!.uid;
+        final docRef = firestore.collection('users').doc(uid);
+        final doc = await docRef.get();
+        if (!doc.exists) {
+          // derive a simple username from email before '@'
+          final String derivedName = email.split('@').first;
+          // default profile photo placeholder
+          const String defaultPhoto = 'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png';
+          final model.User newUser = model.User(
+            name: derivedName,
+            email: email,
+            uid: uid,
+            profilePhoto: defaultPhoto,
+          );
+          await docRef.set(newUser.toJson());
+        }
       } else {
         Get.snackbar(
           'Error Logging in',
