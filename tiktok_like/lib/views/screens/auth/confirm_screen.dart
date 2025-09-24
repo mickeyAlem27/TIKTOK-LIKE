@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:tiktok_like/views/widgets/text_input_field.dart';
 import 'dart:io';
-import 'package:video_player/video_player.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tiktok_like/controllers/upload_video_controller.dart';
+import 'package:tiktok_like/views/widgets/text_input_field.dart';
+import 'package:video_player/video_player.dart';
 
 class ConfirmScreen extends StatefulWidget {
   final File videoFile;
@@ -14,18 +14,19 @@ class ConfirmScreen extends StatefulWidget {
     required this.videoPath,
   }) : super(key: key);
 
+ 
   @override
-  State<ConfirmScreen> createState() => ConfirmScreenState();
+  State<ConfirmScreen> createState() => _ConfirmScreenState();
 }
 
-class ConfirmScreenState extends State<ConfirmScreen> {
+class _ConfirmScreenState extends State<ConfirmScreen> {
   late VideoPlayerController controller;
   TextEditingController _songController = TextEditingController();
   TextEditingController _captionController = TextEditingController();
 
-  UploadVideoController uploadVideoController = Get.put(
-    UploadVideoController(),
-  );
+  UploadVideoController uploadVideoController =
+      Get.put(UploadVideoController());
+
   @override
   void initState() {
     super.initState();
@@ -38,58 +39,75 @@ class ConfirmScreenState extends State<ConfirmScreen> {
     controller.setLooping(true);
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 30),
-
+            const SizedBox(
+              height: 30,
+            ),
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.width / 1.5,
+              height: MediaQuery.of(context).size.height / 1.5,
               child: VideoPlayer(controller),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(
+              height: 30,
+            ),
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     width: MediaQuery.of(context).size.width - 20,
                     child: TextInputField(
                       controller: _songController,
-                      label: 'Song Name',
+                      hintText: 'Song Name',
                       icon: Icons.music_note,
-                      hintText: 'Enter Song Name',
+                      label: 'Song Name',
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     width: MediaQuery.of(context).size.width - 20,
                     child: TextInputField(
                       controller: _captionController,
-                      label: 'caption ',
+                      hintText: 'Caption',
                       icon: Icons.closed_caption,
-                      hintText: 'Enter caption',
+                      label: 'Caption',
                     ),
                   ),
-
-                  const SizedBox(height: 20),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   ElevatedButton(
-                    onPressed: () => uploadVideoController.uploadVideo(
-                      _songController.text,
-                      _captionController.text,
-                      widget.videoPath,
-                    ),
-                    child: Text('share', style: TextStyle(color: Colors.white)),
-                  ),
+                      onPressed: () => uploadVideoController.uploadVideo(
+                          _songController.text,
+                          _captionController.text,
+                          widget.videoPath),
+                      child: const Text(
+                        'Share!',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
+                      ))
                 ],
               ),
-            ),
+            )
           ],
         ),
       ),

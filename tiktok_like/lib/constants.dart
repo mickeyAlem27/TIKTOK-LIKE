@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:tiktok_like/views/screens/auth/add_video_screen.dart';
 
 const pages = [
- Text('HomeScreen'),
+  Text('HomeScreen'),
   Text('SearchScreen'),
   AddVideoScreen(),
   Text('ProfileScreen'),
@@ -23,5 +23,5 @@ FirebaseAuth get firebaseAuth => FirebaseAuth.instance;
 FirebaseStorage get firebaseStorage => FirebaseStorage.instance;
 FirebaseFirestore get firestore => FirebaseFirestore.instance;
 
-  // controller 
-  AuthController get authController => Get.find<AuthController>();
+// controller
+AuthController get authController => Get.find<AuthController>();
